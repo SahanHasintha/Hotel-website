@@ -23,7 +23,6 @@ const LoginUser = ({userLogin}) => {
     }
     return (
         <div>
-            return (
                 <Fragment>
                     <h1 style={{color:'#427DD2'}}>Login User</h1>
                     <form className="ui form" onSubmit={(e)=>onSubmit(e)}>

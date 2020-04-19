@@ -64,8 +64,8 @@ router.delete('/', auth ,async (req,res)=>{
 //!Get All Profiles
 router.get('/',async (req,res)=>{
     try {
-        const profiles = await Profile.find().populate('user', ['name']);
-        res.json({profiles});
+        const profiles = await Profile.find().populate('user', ['email']);
+        res.json(profiles);
     } catch (err) {
         console.log(err.message);
         res.json('Server error');
@@ -111,6 +111,18 @@ router.put('/profilepicture' , auth ,async (req,res)=>{
     } catch (err) {
         console.log(err.message);
         res.json('server error');
+    }
+})
+
+
+//!Get profile by id
+router.get('/hotel/:id',async (req,res)=>{
+    try {
+        const profile = await Profile.findById(req.params.id);
+        res.json(profile);
+    } catch (err) {
+        console.log(err.message);
+        res.json('Server error');
     }
 })
 
