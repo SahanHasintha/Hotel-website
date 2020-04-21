@@ -31,28 +31,55 @@ const RegisterUser = ({userRegister, setAlert}) => {
     }
 
     return (
-        <Fragment>
-            <h1 style={{color:'#427DD2'}}>Register User</h1>
-            <form className="ui form" onSubmit={(e)=>onSubmit(e)}>
+        <div >
+        <div className="ui middle aligned center aligned grid">
+        <div className="column"style={{backgroundColor:"#E5E4E4"}} >
+            <h2 className="ui teal image header">
+            <div className="content">
+                Log-in to your account
+            </div>
+            </h2>
+            <form className="ui large form" onSubmit={(e)=>onSubmit(e)}>
+            <div className="ui stacked segment" style={{backgroundColor:"#E5E4E4"}}>
                 <div className="field">
-                    <label>Name</label>
-                    <input type="text" name="name" placeholder="Name" onChange={(e)=>onChange(e)} value={name}/>
+                    <div className="ui left icon input">
+                        <i className="user icon"></i>
+                        <input type="text" name="name" placeholder="Name" onChange={(e)=>onChange(e)} value={name}/>
+                    </div>
                 </div>
                 <div className="field">
-                    <label>Email</label>
-                    <input type="email" name="email" placeholder="Email"onChange={(e)=>onChange(e)} value={email}/>
+                    <div className="ui left icon input">
+                        <i className="user icon"></i>
+                        <input type="email" name="email" placeholder="Email"onChange={(e)=>onChange(e)} value={email}/>
+                    </div>
                 </div>
                 <div className="field">
-                    <label>Password</label>
-                    <input type="text" name="password" placeholder="Password"onChange={(e)=>onChange(e)} value={password}/>
+                    <div className="ui left icon input">
+                        <i className="lock icon"></i>
+                        <input type="password" name="password" placeholder="Password"onChange={(e)=>onChange(e)} value={password}/>
+                    </div>
                 </div>
                 <div className="field">
-                    <label>Confirm password</label>
-                    <input type="text" name="password2" placeholder="Conform password"onChange={(e)=>onChange(e)} value={password2}/>
+                    <div className="ui left icon input">
+                        <i className="lock icon"></i>
+                        <input type="password" name="password2" placeholder="Conform password"onChange={(e)=>onChange(e)} value={password2}/>
+                    </div>
                 </div>
-                <input type="submit" className="ui primary button" value="Register" />
+                
+                <input type="submit" className="ui fluid large teal submit button" value="Login" />
+                
+            </div>
+
+            <div className="ui error message"></div>
+
             </form>
-        </Fragment>
+
+            <div className="ui message" style={{backgroundColor:"#E5E4E4"}}>
+            before are you login ? <a href="#">Login</a>
+            </div>
+        </div>
+        </div>
+    </div>
     )
 }
 

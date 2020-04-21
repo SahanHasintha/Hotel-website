@@ -2,14 +2,13 @@ import React,{Fragment} from 'react';
 import {Link} from 'react-router-dom';
 
 const ProfileItem = ({profile, key}) => {
-    console.log(profile)
     return (
         <Fragment>
-            <div class="ui celled list" >
-                <div class="item">
-                    <img alt="" style={{height:"150px", width:"150px"}} class="ui avatar image" src="/images/avatar/small/helen.jpg"/>
-                     <div class="content">
-                        <div class="header" style={{marginLeft:"10px", marginTop:"10px"}}>
+            
+                <div className="item" key={profile._id}>
+                    <img alt="" style={{height:"auto", width:"250px"}} align="middle" className="ui small image" src={profile.profilepicture}/>
+                     <div className="content">
+                        <div className="header" style={{marginLeft:"10px", marginTop:"10px"}}>
                             <h3>{profile.name}</h3>
                         </div>
                         <div className="meta" style={{color:"red", marginLeft:"10px", marginTop:"10px"}}>
@@ -24,13 +23,12 @@ const ProfileItem = ({profile, key}) => {
                             </h4>
                         </div>
                     </div>
-                    <div class="right floated content" style={{color:"grey",marginRight:"20px", marginTop:"60px"}}>
-                        <Link to={`hotel-page/${profile._id}`} class="ui button">
+                    <div className="right floated content" style={{color:"grey",marginRight:"20px", marginTop:"60px"}}>
+                        <Link to={`hotel-page/${profile._id}`} className="ui button">
                             Show More...
                         </Link>
                     </div>
                 </div>
-            </div>
         </Fragment>
     )
 }

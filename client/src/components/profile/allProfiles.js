@@ -11,7 +11,9 @@ const AllProfiles = ({allProfiles, profile :{profiles, loading}}) => {
 
     return (
         <div   style={{margin:"40px", marginLeft:"100px"}}>
-           {profiles !== null && loading ?<LoadingGif/> : profiles.map(profile=> <ProfileItem profile={profile} key={profile.id}/>)}
+           {profiles !== null && loading ?<LoadingGif/> : profiles.map(profile=> <div className="ui celled list"  >
+               <ProfileItem profile={profile} key={profile.id}/>
+               </div>)}
         </div>
     )
 }

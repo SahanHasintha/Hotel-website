@@ -7,13 +7,12 @@ const NavBar = ({logout , auth: {isAuthenticated , loading}}) => {
 
     //*auth users
     return (
-      <div className="ui secondary  menu">
-
+      <div className="ui secondary  menu" style={{backgroundColor:"#30BBB2"}}>
         {!loading && isAuthenticated ? <Fragment>
           <div className="left menu">
           <div className="item">
-              <h1 className="ui red inverted header">WWW.FINDme.LK</h1>
-              <i class="blind icon"></i>
+              <h1 className="ui black inverted header">WWW.FINDme.LK</h1>
+              <i className="blind icon"></i>
           </div>
           </div>
           <div className="right menu">
@@ -26,18 +25,18 @@ const NavBar = ({logout , auth: {isAuthenticated , loading}}) => {
           <Link className="ui item" to="/">
             All items
           </Link>
-          <Link className="ui item" >
+          <Link className="ui item" to = "/dashboard" >
             Dashboard
           </Link>
-          <Link className="ui item" onClick={()=>logout()}>
+          <Link className="ui item" to="/" onClick={()=>logout()}>
             Logout
           </Link>
           </div>
         </Fragment>: (<Fragment>
           <div className="left menu">
             <div className="item">
-                <h1 className="ui red inverted header">WWW.FINDme.LK</h1>
-                <i class="blind icon"></i>
+                <h1 className="ui black inverted header">WWW.FINDme.LK</h1>
+                <i className="blind icon"></i>
             </div>
           </div>
           <div className="right menu">

@@ -22,22 +22,41 @@ const LoginUser = ({userLogin}) => {
         userLogin(formData);
     }
     return (
-        <div>
-                <Fragment>
-                    <h1 style={{color:'#427DD2'}}>Login User</h1>
-                    <form className="ui form" onSubmit={(e)=>onSubmit(e)}>
-                        
-                        <div className="field">
-                            <label>Email</label>
-                            <input type="email" name="email" placeholder="Email"onChange={(e)=>onChange(e)} value={email}/>
-                        </div>
-                        <div className="field">
-                            <label>Password</label>
-                            <input type="text" name="password" placeholder="Password"onChange={(e)=>onChange(e)} value={password}/>
-                        </div>
-                        <input type="submit" className="ui primary button" value="Register" />
-                    </form>
-                </Fragment>
+        <div >
+            <div className="ui middle aligned center aligned grid">
+            <div className="column"style={{backgroundColor:"#E5E4E4"}} >
+                <h2 className="ui teal image header">
+                <div className="content">
+                    Log-in to your account
+                </div>
+                </h2>
+                <form className="ui large form" onSubmit={(e)=>onSubmit(e)}>
+                <div className="ui stacked segment" style={{backgroundColor:"#E5E4E4"}}>
+                    <div className="field">
+                    <div className="ui left icon input">
+                        <i className="user icon"></i>
+                        <input type="text" name="email" placeholder="E-mail address"onChange={(e)=>onChange(e)} value={email}/>
+                    </div>
+                    </div>
+                    <div className="field">
+                    <div className="ui left icon input">
+                        <i className="lock icon"></i>
+                        <input type="password" name="password" placeholder="Password" onChange={(e)=>onChange(e)} value={password}/>
+                    </div>
+                    </div>
+                    <input type="submit" className="ui fluid large teal submit button" value="Login" />
+                    
+                </div>
+
+                <div className="ui error message"></div>
+
+                </form>
+
+                <div className="ui message" style={{backgroundColor:"#E5E4E4"}}>
+                New to us? <a href="#">Sign Up</a>
+                </div>
+            </div>
+            </div>
         </div>
     )
 }

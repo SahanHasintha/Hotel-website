@@ -10,10 +10,10 @@ const User = require('../models/User');
 
 //!Create profile for hotel
 router.post('/',[auth, [
-    check('name').not().isEmpty(),
-    check('address').not().isEmpty(),
-    check('popularcity').not().isEmpty(),
-    check('phonenumber').not().isEmpty(),
+    check('name' , 'name is required').not().isEmpty(),
+    check('address', 'address is required').not().isEmpty(),
+    check('popularcity', 'popularcity is required').not().isEmpty(),
+    check('phonenumber' , 'phonenumber is required').not().isEmpty(),
 ]],async (req,res)=>{
     const errors = validationResult(req);
     if(!errors.isEmpty()){
@@ -41,7 +41,41 @@ router.post('/',[auth, [
     
             res.json(profile);
         }
+        console.log('have a profile for you')
         res.json('Have a profile for you');
+    } catch (err) {
+        console.log(err.message);
+        res.json('Server error');
+    }
+});
+
+router.put('/edit-profile',[auth, [
+    check('name' , 'name is required').not().isEmpty(),
+    check('address', 'address is required').not().isEmpty(),
+    check('popularcity', 'popularcity is required').not().isEmpty(),
+    check('phonenumber' , 'phonenumber is required').not().isEmpty(),
+]],async (req,res)=>{
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        res.status(400).json({errors:errors.array()})
+    }
+
+    const {name, address, popularcity, todaybestoffer, description,phonenumber} = req.body;
+
+    try {
+        let profile = await Profile.findOne({user:req.data.user.id})
+        if(profile){
+            profile.name = name;
+            profile.address = address;
+            profile.popularcity = popularcity;
+            profile.todaybestoffer = todaybestoffer;
+            profile.description = description;
+            profile.phonenumber = phonenumber;
+
+            await profile.save();
+    
+            res.json(profile);
+        }
     } catch (err) {
         console.log(err.message);
         res.json('Server error');
@@ -98,16 +132,16 @@ router.put('/rooms',[auth, [
     }
 })
 
-//!Upload the imageUrl
+//!Upload the profile picture
 router.put('/profilepicture' , auth ,async (req,res)=>{
     const {profilePictureUrl} = req.body;
-
+    console.log(profilePictureUrl)
     try {
         const profile = await Profile.findOne({user:req.data.user.id});
         profile.profilepicture = profilePictureUrl;
 
         await profile.save();
-        res.json({profile});
+        res.json(profile);
     } catch (err) {
         console.log(err.message);
         res.json('server error');
@@ -123,6 +157,17 @@ router.get('/hotel/:id',async (req,res)=>{
     } catch (err) {
         console.log(err.message);
         res.json('Server error');
+    }
+})
+
+//!Get profile
+router.get('/myProfile', auth, async (req,res)=>{
+    try {
+        const profile = await Profile.findOne({user:req.data.user.id}).populate('user', ['name']);
+        res.json(profile);
+    } catch (err) {
+        console.log(err.message);
+        res.json('Server error')
     }
 })
 
