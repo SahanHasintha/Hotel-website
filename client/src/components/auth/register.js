@@ -1,5 +1,6 @@
-import React, {Fragment, useState} from 'react';
+import React, {useState} from 'react';
 import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
 import {userRegister} from '../../actions/auth';
 import {setAlert} from '../../actions/alert';
 
@@ -75,7 +76,7 @@ const RegisterUser = ({userRegister, setAlert}) => {
             </form>
 
             <div className="ui message" style={{backgroundColor:"#E5E4E4"}}>
-            before are you login ? <a href="#">Login</a>
+            before are you login ? <Link to="/login">Login</Link>
             </div>
         </div>
         </div>

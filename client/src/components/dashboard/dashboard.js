@@ -12,6 +12,7 @@ const Dashboard = ({profilePictureUpload, getMyProfile , profile:{profile , load
     useEffect(()=>{
         getMyProfile()
     },[getMyProfile])
+
     const handleImageChange = (e) => {
         setImage({img: e.target.files[0]});
     }
@@ -43,7 +44,15 @@ const Dashboard = ({profilePictureUpload, getMyProfile , profile:{profile , load
             <Link to="/create-profile" className="ui toggle button">Create Profile</Link>
         </div> :
         <div>
-            {profile !== null && <img className="ui medium circular image" src={profile.profilepicture} alt=""/>}
+            {profile !== null && 
+            <div>
+            <h1>{profile.name}</h1>
+            <img 
+                style={{borderStyle:'solid'}}
+                className="ui medium circular image" 
+                src={profile.profilepicture} alt=""
+            />
+            </div>}
             <input type="file" onChange={(e) => handleImageChange(e)}/>
             <button onClick={()=>handleSave()}>Save</button>
             <div className="ui grid" style={{marginTop:"50px"}}>
@@ -58,6 +67,12 @@ const Dashboard = ({profilePictureUpload, getMyProfile , profile:{profile , load
                 </div>
                 <div className="four wide column">
                     <Link to="/update-banquethall" className="ui toggle button">Add new BanquetHall</Link>
+                </div>
+                <div className="four wide column">
+                    <Link to="/my-rooms" className="ui toggle button">Show my rooms</Link>
+                </div>
+                <div className="four wide column">
+                    <Link to="/my-restuarant" className="ui toggle button">Show my restuarant</Link>
                 </div>
             </div>
         </div>

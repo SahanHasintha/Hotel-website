@@ -1,4 +1,4 @@
-import {ALL_PROFILES,GET_PROFILEBYID, PROPIC_UPLOADED, GET_PROFILE, PROFILE_ERROR} from '../actions/types';
+import {ALL_PROFILES,GET_PROFILEBYID, PROPIC_UPLOADED, GET_PROFILE, PROFILE_ERROR,DELETE_ROOM} from '../actions/types';
 
 const initialState = {
     profiles:[],
@@ -18,7 +18,8 @@ export default (state=initialState, action) => {
             }
         case GET_PROFILEBYID:
         case PROPIC_UPLOADED:
-            case GET_PROFILE:
+        case GET_PROFILE:
+        case DELETE_ROOM:
             return {
                 ...state,
                 profile:payload,

@@ -1,6 +1,6 @@
 
 import axios from 'axios';
-import {ALL_PROFILES, GET_PROFILEBYID, PROPIC_UPLOADED, PROPIC_UPLOAD_FIAL, GET_PROFILE, PROFILE_ERROR} from './types';
+import {ALL_PROFILES, GET_PROFILEBYID, PROPIC_UPLOADED, GET_PROFILE, PROFILE_ERROR, DELETE_ROOM} from './types';
 import {setAlert} from './alert';
 
 //! Get All profiles
@@ -21,13 +21,17 @@ export const allProfiles = () => async (dispatch) => {
 }
 
 //!Create profile
-export const createProfile = (formdata)=> async dispatch => {
+export const createProfile = (formdata, url)=> async dispatch => {
+
+    const obj = {
+        ...formdata, profilepicture:url
+    }
     const config= {
         headers : {
             "Content-Type":"application/json"
         }
     }
-    const body = JSON.stringify(formdata);
+    const body = JSON.stringify(obj);
     try {
         const res = await axios.post('http://localhost:5000/api/profile', body , config);
 
@@ -115,7 +119,7 @@ export const getMyProfile = () =>async (dispatch) => {
     }
 }
 
-//!Profile pic upload
+//!Change profile picture
 export const profilePictureUpload = (url) => async (dispatch) => {
     try {
         const config ={
@@ -145,15 +149,17 @@ export const profilePictureUpload = (url) => async (dispatch) => {
 }
 
 //!Add the rooms
-export const addRooms = (formdata) => async dispatch => {
+export const addRooms = (formdata , imageUrls) => async dispatch => {
+
+    const obj ={...formdata, images:imageUrls}
     const config = { 
         headers :{
             "Content-Type":"application/json"
         }
     }
-    const body = JSON.stringify(formdata)
+    
     try {
-        const res = await axios.put('http://localhost:5000/api/profile/rooms', body, config);
+        const res = await axios.put('http://localhost:5000/api/profile/rooms', obj, config);
         dispatch({
             type:GET_PROFILE,
             payload:res.data
@@ -170,6 +176,42 @@ export const addRooms = (formdata) => async dispatch => {
         dispatch({
             type:PROFILE_ERROR,
             payload: {msg: err.response.statusText, status:err.response.status}
+        })
+    }
+}
+
+//!Delete the room
+export const DeleteRoom = (roomId) =>async (dispatch) => {
+    try {
+        const res = await axios.delete(`http://localhost:5000/api/profile/rooms/${roomId}`);
+        dispatch({
+            type:DELETE_ROOM,
+            payload:res.data
+        });
+        dispatch(setAlert('Room removed', 'green'))
+    } catch (err) {
+        console.log(err.message)
+        dispatch(setAlert('Room not removed', 'red'))
+    }
+}
+
+
+//!Add more images to room
+export const roomsImages = (urls, roomId) =>async (dispatch) =>{
+    // const obj = { ...urls};
+    // console.log(obj);
+    // console.log(roomId);
+    
+    try {
+        const res = await axios.put(`http://localhost:5000/api/profile/rooms/${roomId}`, urls);
+        dispatch({
+            type:GET_PROFILE,
+            payload:res.data
+        })
+    } catch (err) {
+        console.log(err.message);
+        dispatch({
+            type:PROFILE_ERROR
         })
     }
 }

@@ -11,7 +11,8 @@ const UpdateProfile = ({profile:{profile,loading}, getMyProfile, editeProfile}) 
         description:'',
         phonenumber:''
     })
-    const {name,
+    const {
+        name,
         address,
         popularcity,
         todaybestoffer,
@@ -31,7 +32,7 @@ const UpdateProfile = ({profile:{profile,loading}, getMyProfile, editeProfile}) 
             phonenumber: loading || !profile.phonenumber ? '' : profile.phonenumber,
         })
         
-    },[loading])
+    },[loading, ])
 
    
 

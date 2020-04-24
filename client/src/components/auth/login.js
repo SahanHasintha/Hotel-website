@@ -1,6 +1,7 @@
-import React,{Fragment, useState} from 'react';
+import React,{useState} from 'react';
 import {connect} from 'react-redux';
 import {userLogin} from '../../actions/auth';
+import {Link} from 'react-router-dom';
 
 
 const LoginUser = ({userLogin}) => {
@@ -53,7 +54,7 @@ const LoginUser = ({userLogin}) => {
                 </form>
 
                 <div className="ui message" style={{backgroundColor:"#E5E4E4"}}>
-                New to us? <a href="#">Sign Up</a>
+                New to us? <Link to="/register">Sign Up</Link>
                 </div>
             </div>
             </div>

@@ -11,9 +11,12 @@ const AllProfiles = ({allProfiles, profile :{profiles, loading}}) => {
 
     return (
         <div   style={{margin:"40px", marginLeft:"100px"}}>
-           {profiles !== null && loading ?<LoadingGif/> : profiles.map(profile=> <div className="ui celled list"  >
-               <ProfileItem profile={profile} key={profile.id}/>
-               </div>)}
+           {profiles !== null && loading ?<LoadingGif/> : profiles.map(profile=> 
+           <div class="ui raised segment">
+               <div className="ui celled list"  >
+                    <ProfileItem profile={profile} key={profile.id}/>
+               </div>
+            </div>)}
         </div>
     )
 }

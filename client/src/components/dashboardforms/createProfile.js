@@ -1,22 +1,25 @@
 import React,{useState} from 'react';
 import {connect} from 'react-redux';
+import firebase from '../../firebase/firebase';
 import {createProfile} from '../../actions/profile';
 
 const ProfileCreate = ({createProfile}) => {
+    const [profilePicture, setProfilePicture] = useState(null)
     const [formData, setFormData] = useState({
         name:'', 
         address:'', 
         popularcity:'', 
         todaybestoffer:'', 
         description:'',
-        phonenumber:''
+        phonenumber:'',
     });
     const {name, 
         address, 
         popularcity, 
         todaybestoffer, 
         description,
-        phonenumber} = formData;
+        phonenumber,
+    } = formData;
         
         const onChange = (e) => {
             setFormData({
@@ -26,7 +29,31 @@ const ProfileCreate = ({createProfile}) => {
 
         const onSubmit = (e) => {
             e.preventDefault();
-            createProfile(formData);
+
+
+            let bucketName = 'images';
+            let file = profilePicture;
+            let storageRef = firebase.storage().ref(`${bucketName}/${file.name}`)
+            let uploadTask = storageRef.put(file)
+            uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+            () => {/*Upload in progress function*/},
+            () => {/*handle unsuccessfullUploads*/},
+            async () => {
+                // handle upload complete.
+                await uploadTask.snapshot.ref.getDownloadURL().then(async (downloadUrl)=>{
+                    if(downloadUrl !== null){
+
+                        createProfile(formData, downloadUrl);
+                         
+                         
+                    }
+                }
+                )
+            }
+            )
+            
+            // e.preventDefault();
+            // createProfile(formData);
         }
     return (
         <div >
@@ -75,12 +102,20 @@ const ProfileCreate = ({createProfile}) => {
 
                     <div className="field">
                     <div className="ui left icon input">
+                        <input type="file" name="profilepicture" placeholder="Set the new picture" onChange={(e)=>{
+                            setProfilePicture(e.target.files[0])
+                        }}/>
+                    </div>
+                    </div>
+
+                    <div className="field">
+                    <div className="ui left icon input">
                         <i className="user icon"></i>
                         <input type="text" name="phonenumber" placeholder="Set the new phonenumber"onChange={(e)=>onChange(e)} value={phonenumber}/>
                     </div>
                     </div>
                     
-                    <input type="submit" className="ui fluid large teal submit button" value="Edit the profile" />
+                    <input type="submit" className="ui fluid large teal submit button" value="Create the profile" />
                     
                 </div>
 

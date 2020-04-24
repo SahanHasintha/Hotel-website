@@ -1,6 +1,5 @@
-import React,{useEffect, Fragment} from 'react';
+import React,{ Fragment} from 'react';
 import {connect} from 'react-redux';
-import {getProfileById} from '../../actions/profile';
 import LoadingGif from '../layouts/loadingGif';
 
 const Rooms = ({profile:{profile, loading}}) => {
@@ -10,14 +9,14 @@ const Rooms = ({profile:{profile, loading}}) => {
             
             {profile===null || loading ? <LoadingGif/> :(<div className="ui relaxed divided items">
             <h1>Rooms</h1>
-                {profile.restuarant.length === 0 ? <h3 style={{color:"red"}}>They have no restuarant</h3>:<Fragment>
+                {profile.rooms.length === 0 ? <h3 style={{color:"red"}}>They have no restuarant</h3>:<Fragment>
                 
                 {profile.rooms.map(room => (<div className="item" key={room._id}>
                     <div className="ui small image">
-                        <img src="" alt=""/>
+                        {room.images !== 0 ? <img src={room.images[0]} alt=""/>: <img src="" alt=""/>}
                     </div>
                     <div className="content">
-                        <a className="header">{room.price}</a>
+                        <h5 className="header">{room.price}</h5>
                         <div className="meta">
                             <span>{room.facilities}</span>
                         </div>

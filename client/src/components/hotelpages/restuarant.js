@@ -1,6 +1,5 @@
-import React,{useEffect, Fragment} from 'react';
+import React,{Fragment} from 'react';
 import {connect} from 'react-redux';
-import {getProfileById} from '../../actions/profile';
 import LoadingGif from '../layouts/loadingGif';
 
 const Restuarant = ({profile:{profile, loading}}) => {
@@ -15,7 +14,7 @@ const Restuarant = ({profile:{profile, loading}}) => {
                                         <img src="" alt=""/>
                                     </div>
                                     <div className="content">
-                                        <a className="header">{food.price}</a>
+                                        <h5 className="header">{food.price}</h5>
                                         <div className="meta">
                                             <span>{food.foodname}</span>
                                         </div>

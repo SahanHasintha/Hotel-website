@@ -20,7 +20,7 @@ router.post('/',[auth, [
         res.status(400).json({errors:errors.array()})
     }
 
-    const {name, address, popularcity, todaybestoffer, description,phonenumber} = req.body;
+    const {name, address, popularcity, todaybestoffer, description,phonenumber , profilepicture} = req.body;
     const user = req.data.user.id;
     const newObj = {
         user,
@@ -29,7 +29,8 @@ router.post('/',[auth, [
         popularcity, 
         todaybestoffer, 
         description,
-        phonenumber
+        phonenumber,
+        profilepicture
     };
 
     try {
@@ -39,7 +40,7 @@ router.post('/',[auth, [
 
             await profile.save();
     
-            res.json(profile);
+            return res.json(profile);
         }
         console.log('have a profile for you')
         res.json('Have a profile for you');
@@ -116,8 +117,8 @@ router.put('/rooms',[auth, [
     if(!errors.isEmpty()){
         res.status(400).json({errors:errors.array()});
     }
-    const {price,facilities,ac,description, category} = req.body;
-    const newObj = {price,facilities,ac,description, category}
+    const {price,facilities,ac,description, category ,images} = req.body;
+    const newObj = {price,facilities,ac,description, category, images}
     try {
         const profile = await Profile.findOne({user:req.data.user.id});
 
@@ -132,10 +133,9 @@ router.put('/rooms',[auth, [
     }
 })
 
-//!Upload the profile picture
+//!Change the profile picture
 router.put('/profilepicture' , auth ,async (req,res)=>{
     const {profilePictureUrl} = req.body;
-    console.log(profilePictureUrl)
     try {
         const profile = await Profile.findOne({user:req.data.user.id});
         profile.profilepicture = profilePictureUrl;
@@ -168,6 +168,37 @@ router.get('/myProfile', auth, async (req,res)=>{
     } catch (err) {
         console.log(err.message);
         res.json('Server error')
+    }
+})
+
+//!Add more images to room
+router.put('/rooms/:id', auth , async (req,res)=>{
+    try {
+
+        const profile = await Profile.findOne({user:req.data.user.id});
+        
+        if(!profile){
+            return res.json('No profile');
+        }
+        profile.rooms.filter(room => room.id === req.params.id && 
+                req.body.map(url => {
+                    if(room.images.length > 6){
+                        return res.json(profile);
+                    }else{
+                        room.images.unshift(url)
+                        
+                    };
+                })
+                
+            );
+
+        await profile.save();
+        res.json(profile);
+        
+        
+    } catch (err) {
+        console.log(err.message)
+        res.json('Server error');
     }
 })
 

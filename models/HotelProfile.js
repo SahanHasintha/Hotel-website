@@ -58,9 +58,7 @@ const HotelProfileSchema = mongoose.Schema({
             description:{
                 type:String
             },
-            images:{
-                type:String
-            }
+            images:[]
         }
     ],
     restuarant:[
@@ -69,9 +67,7 @@ const HotelProfileSchema = mongoose.Schema({
                 type:String,
                 required:true
             },
-            foodImage:{
-                type:String
-            },
+            foodImages:[],
             price:{
                 type:String,
                 required:true

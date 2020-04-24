@@ -5,6 +5,7 @@ import thunk from 'redux-thunk'
 import {composeWithDevTools} from 'redux-devtools-extension';
 import {createStore , applyMiddleware} from 'redux';
 import reducers from '../reducers';
+import PrivateRoute from './routing/privateRouting';
 import {loadUser} from '../actions/auth';
 import setAuthToken from '../utils/setAuthToken';
 import NavBar from './layouts/navBar';
@@ -21,6 +22,8 @@ import UpdateProfile from './dashboardforms/updateProfile';
 import UpdateRooms from './dashboardforms/updateRooms';
 import UpdateBanquet from './dashboardforms/updateBanquet';
 import UpdateRestuarant from './dashboardforms/updateRestuarant';
+import MyRooms from './dashboard/showMyRooms';
+import MyRestuarant from './dashboard/showMyRestuarant';
 
 
 if(localStorage.token){
@@ -49,17 +52,20 @@ const App = () => {
                                         <Route path="/hotel-page/:id" component={HotelPage}/>
                                         <Route path="/hotel-page/:id/restuarant" component={Restuarant}/>
                                         <Route path="/hotel-page/:id/rooms" component={Rooms}/>
+                                        <PrivateRoute path="/my-rooms" component={MyRooms}/>
+                                        <PrivateRoute path="/my-restuarant" component={MyRestuarant}/>
                                     </div>
-                                    <Route path="/dashboard" component={Dashboard}/>
+                                    <PrivateRoute path="/dashboard" component={Dashboard}/>
                                     
                                     <div  style={{ margin:"80px", marginLeft:"300px",marginRight:"300px"}}>
                                         <Route path="/login" component={Login} />
                                         <Route path="/register" component={Register}/>
-                                        <Route path="/create-profile" component={CreateProfile}/>
-                                        <Route path="/update-profile" component={UpdateProfile}/>
-                                        <Route path="/update-rooms" component={UpdateRooms}/>
-                                        <Route path="/update-restuarant" component={UpdateRestuarant}/>
-                                        <Route path="/update-banquethall" component={UpdateBanquet}/>
+                                        <PrivateRoute path="/create-profile" component={CreateProfile}/>
+                                        <PrivateRoute path="/update-profile" component={UpdateProfile}/>
+                                        <PrivateRoute path="/update-rooms" component={UpdateRooms}/>
+                                        <PrivateRoute path="/update-restuarant" component={UpdateRestuarant}/>
+                                        <PrivateRoute path="/update-banquethall" component={UpdateBanquet}/>
+                                        
                                     </div>
                                 </Fragment>
                             </Switch>

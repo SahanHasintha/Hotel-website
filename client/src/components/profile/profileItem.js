@@ -4,7 +4,6 @@ import {Link} from 'react-router-dom';
 const ProfileItem = ({profile, key}) => {
     return (
         <Fragment>
-            
                 <div className="item" key={profile._id}>
                     <img alt="" style={{height:"auto", width:"250px"}} align="middle" className="ui small image" src={profile.profilepicture}/>
                      <div className="content">
