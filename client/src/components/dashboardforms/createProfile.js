@@ -2,8 +2,9 @@ import React,{useState} from 'react';
 import {connect} from 'react-redux';
 import firebase from '../../firebase/firebase';
 import {createProfile} from '../../actions/profile';
+import {withRouter} from 'react-router-dom';
 
-const ProfileCreate = ({createProfile}) => {
+const ProfileCreate = ({createProfile, history}) => {
     const [profilePicture, setProfilePicture] = useState(null)
     const [formData, setFormData] = useState({
         name:'', 
@@ -42,10 +43,7 @@ const ProfileCreate = ({createProfile}) => {
                 // handle upload complete.
                 await uploadTask.snapshot.ref.getDownloadURL().then(async (downloadUrl)=>{
                     if(downloadUrl !== null){
-
-                        createProfile(formData, downloadUrl);
-                         
-                         
+                        createProfile(formData, downloadUrl, history);
                     }
                 }
                 )
@@ -128,4 +126,4 @@ const ProfileCreate = ({createProfile}) => {
     )
 }
 
-export default connect(null, {createProfile})(ProfileCreate);
+export default connect(null, {createProfile})(withRouter(ProfileCreate));

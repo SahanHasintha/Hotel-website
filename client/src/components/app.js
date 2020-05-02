@@ -24,6 +24,8 @@ import UpdateBanquet from './dashboardforms/updateBanquet';
 import UpdateRestuarant from './dashboardforms/updateRestuarant';
 import MyRooms from './dashboard/showMyRooms';
 import MyRestuarant from './dashboard/showMyRestuarant';
+import Halls from './hotelpages/banquetHall';
+import ShowOneRoom from './hotelpages/showOneRoom';
 
 
 if(localStorage.token){
@@ -48,12 +50,15 @@ const App = () => {
                             <Switch>
                                 <Fragment>
                                     <Route path="/" exact component={AllProfiles}/>
-                                    <div  style={{ margin:"80px"}}>
+                                    <div  style={{ marginLeft:"200px", marginRight:"200px"}}>
                                         <Route path="/hotel-page/:id" component={HotelPage}/>
                                         <Route path="/hotel-page/:id/restuarant" component={Restuarant}/>
-                                        <Route path="/hotel-page/:id/rooms" component={Rooms}/>
-                                        <PrivateRoute path="/my-rooms" component={MyRooms}/>
+                                        <Route path="/hotel-page/:id/rooms"  component={Rooms}/>
+                                        <Route path="/hotel-page/:id/halls" component={Halls}/>
+                                        <PrivateRoute path="/my-rooms" exact component={MyRooms}/>
+                                        <Route path="/:profileId/rooms/:roomId" component={ShowOneRoom}/>
                                         <PrivateRoute path="/my-restuarant" component={MyRestuarant}/>
+                                        
                                     </div>
                                     <PrivateRoute path="/dashboard" component={Dashboard}/>
                                     

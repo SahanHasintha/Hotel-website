@@ -1,9 +1,10 @@
 import React,{useState} from 'react';
 import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom';
 import firebase from '../../firebase/firebase';
 import {addRooms} from '../../actions/profile';
 
-const UpdateRoom = ({addRooms}) => {
+const UpdateRoom = ({addRooms, history}) => {
     const [formData, setFormData]= useState({
         price:'',
         ac:false,
@@ -43,7 +44,7 @@ const UpdateRoom = ({addRooms}) => {
                             imageUrls = [...imageUrls, downloadUrl];
 
                             if(imageUrls.length === roomImages.length){
-                                addRooms(formData, imageUrls);
+                                addRooms(formData, imageUrls, history);
                             }
                         }
                     })
@@ -116,4 +117,4 @@ const UpdateRoom = ({addRooms}) => {
     )
 }
 
-export default connect(null, {addRooms})(UpdateRoom);
+export default connect(null, {addRooms})(withRouter(UpdateRoom));

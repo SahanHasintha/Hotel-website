@@ -22,13 +22,14 @@ router.post('/',[auth, [
 
     const {name, address, popularcity, todaybestoffer, description,phonenumber , profilepicture} = req.body;
     const user = req.data.user.id;
+    const descriptionArray = description.split('.');
     const newObj = {
         user,
         name, 
         address, 
         popularcity, 
         todaybestoffer, 
-        description,
+        description:descriptionArray,
         phonenumber,
         profilepicture
     };
@@ -50,6 +51,8 @@ router.post('/',[auth, [
     }
 });
 
+
+//!Edit profile
 router.put('/edit-profile',[auth, [
     check('name' , 'name is required').not().isEmpty(),
     check('address', 'address is required').not().isEmpty(),
@@ -62,7 +65,8 @@ router.put('/edit-profile',[auth, [
     }
 
     const {name, address, popularcity, todaybestoffer, description,phonenumber} = req.body;
-
+    console.log(req.body)
+    const descriptionArray = description.split('.');
     try {
         let profile = await Profile.findOne({user:req.data.user.id})
         if(profile){
@@ -70,7 +74,7 @@ router.put('/edit-profile',[auth, [
             profile.address = address;
             profile.popularcity = popularcity;
             profile.todaybestoffer = todaybestoffer;
-            profile.description = description;
+            profile.description = [...descriptionArray];
             profile.phonenumber = phonenumber;
 
             await profile.save();
@@ -209,11 +213,12 @@ router.put('/restuarant',[auth, [
     check('price', 'Price is required').not().isEmpty()
 ]], async (req,res)=>{
     const errors = validationResult(req);
+    console.log(errors);
     if(!errors.isEmpty()){
         res.status(401).json({errors:errors.array()});
     }
-    const {foodname, price, description} = req.body;
-    const newObj = {foodname, price, description};
+    const {foodname, price, description, foodImages} = req.body;
+    const newObj = {foodname, price, description, foodImages};
 
     try {
         const profile = await Profile.findOne({user:req.data.user.id});
@@ -243,6 +248,23 @@ router.delete('/restuarant/:foodId',auth,async (req,res)=>{
     }
 })
 
+//!Add more images for restuarant
+router.put('/foods/:id', auth ,async (req,res)=> {
+    try {
+        const profile = await Profile.findOne({user : req.data.user.id});
+        profile.restuarant.map(food => food.id===req.params.id &&
+        req.body.map(url => {
+            food.foodImages.length>6 ? res.json('You cannot update anymore images') :
+            food.foodImages.unshift(url)
+        }))
+        await profile.save();
+        return res.json(profile);
+    } catch (err) {
+        console.log(err.message);
+        res.json('Server error');
+    }
+})
+
 
 //!Remove the room in rooms
 router.delete('/rooms/:roomId',auth , async (req,res)=>{
@@ -259,6 +281,54 @@ router.delete('/rooms/:roomId',auth , async (req,res)=>{
     } catch (err) {
         console.log(err,message);
         res.json('server error');
+    }
+})
+
+//!Add wedding halls
+router.put('/weddinghalls', [auth, [
+    check('hallname', 'Hall name is required').not().isEmpty(),
+    check('price', 'Price is required').not().isEmpty(),
+    check('phonenumber', 'Phone number is required').not().isEmpty()
+]] ,async (req,res) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(400).json({errors:errors.array()})
+    }
+
+    const {
+        price, 
+        description, 
+        phonenumber, 
+        hallname,
+        included, 
+        hallimages} = req.body;
+
+        if(included !== null){
+            arrayOfIncluded =  included.split('.');
+            console.log(arrayOfIncluded);
+        }
+        const obj = {
+            price,
+            description,
+            phonenumber,
+            hallname,
+            hallimages,
+            included:[...arrayOfIncluded]
+        }
+    try {
+        console.log(obj)
+            const profile = await Profile.findOne({user:req.data.user.id})
+
+            profile.weddinghall.unshift(obj);
+
+            await profile.save();
+
+            res.json(profile);
+
+
+    } catch (err) {
+        console.log(err.message);
+        res.json('Server error');
     }
 })
 module.exports = router;

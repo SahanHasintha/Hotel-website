@@ -21,9 +21,7 @@ const HotelProfileSchema = mongoose.Schema({
     todaybestoffer:{
         type:String
     },
-    description:{
-        type:String
-    },
+    description:[],
     phonenumber:{
         type:String,
         required:true
@@ -86,13 +84,16 @@ const HotelProfileSchema = mongoose.Schema({
             description:{
                 type:String
             },
+            phonenumber:{
+                type:String,
+                required:true
+            },
             hallname:{
                 type:String,
                 required:true
             },
-            included:{
-                type:String
-            }
+            included:[],
+            hallimages:[]
         }
     ]
 

@@ -5,7 +5,8 @@ const connect = async () => {
         await mongoose.connect('mongodb+srv://sahanhasintha:sahan@cluster0-rkwqf.mongodb.net/test?retryWrites=true&w=majority',{
             useNewUrlParser: true,
             useUnifiedTopology: true,
-            useFindAndModify:false
+            useFindAndModify:false,
+	    useCreateIndex:true
         });
         console.log('Database connect');
     } catch (err) {

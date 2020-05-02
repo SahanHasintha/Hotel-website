@@ -23,12 +23,15 @@ const NavBar = ({logout , auth: {isAuthenticated , loading}}) => {
             </div>
           </div>
           <Link className="ui item" to="/">
+            <i class="list ul icon"/>
             All items
           </Link>
           <Link className="ui item" to = "/dashboard" >
+            <i class="user circle icon"/>
             Dashboard
           </Link>
           <Link className="ui item" to="/" onClick={()=>logout()}>
+          <i class="user times icon"/>
             Logout
           </Link>
           </div>
@@ -46,13 +49,24 @@ const NavBar = ({logout , auth: {isAuthenticated , loading}}) => {
                 <i className="search link icon"></i>
               </div>
             </div>
-              <Link className="item" to="/login">
-                Login
-              </Link>
-              <Link className="item" to ="/register">
-                Register
-              </Link>
-            </div>
+            
+              <div style={{display:'flex', alignItems:'center', marginRight:20}}>
+                <Link className="ui item" to="/">
+                  <i class="list ul icon"/>
+                  All items
+                </Link>
+                
+                <Link className="item" to="/login">
+                <i class="user icon"/>
+                  Login
+                </Link>
+              </div>
+                
+                <Link className="item" to ="/register">
+                <i class="user plus icon"/>
+                  Register
+                </Link>
+              </div>
           </Fragment>)}
       </div>
     );

@@ -19,20 +19,30 @@ const UpdateProfile = ({profile:{profile,loading}, getMyProfile, editeProfile}) 
         description,
         phonenumber}  = formData;
 
-
+        
     useEffect(()=>{
         getMyProfile();
+
+        let str = ''
+        if(profile.description){
+            profile.description.forEach(element => {
+                str +=   element + "."
+                console.log(str);
+            });
+        }
 
         setFormData({
             name: loading || !profile.name ? '' : profile.name,
             address: loading || !profile.address ? '' : profile.address,
             popularcity: loading || !profile.popularcity ? '' : profile.popularcity,
             todaybestoffer: loading || !profile.todaybestoffer ? '' : profile.todaybestoffer,
-            description: loading || !profile.description ? '' : profile.description,
+            description: loading || !profile.description ? '' : str,
             phonenumber: loading || !profile.phonenumber ? '' : profile.phonenumber,
         })
         
     },[loading, ])
+
+
 
    
 

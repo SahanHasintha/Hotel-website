@@ -21,7 +21,7 @@ export const allProfiles = () => async (dispatch) => {
 }
 
 //!Create profile
-export const createProfile = (formdata, url)=> async dispatch => {
+export const createProfile = (formdata, url, history)=> async dispatch => {
 
     const obj = {
         ...formdata, profilepicture:url
@@ -40,7 +40,8 @@ export const createProfile = (formdata, url)=> async dispatch => {
             payload:res.data
         })
 
-        dispatch(setAlert('Profile created', 'green'))
+        dispatch(setAlert('Profile created', 'green'));
+        history.push('/dashboard');
     } catch (err) {
         console.log(err.message);
         const errors = err.response.data.errors;
@@ -149,7 +150,7 @@ export const profilePictureUpload = (url) => async (dispatch) => {
 }
 
 //!Add the rooms
-export const addRooms = (formdata , imageUrls) => async dispatch => {
+export const addRooms = (formdata , imageUrls, history) => async dispatch => {
 
     const obj ={...formdata, images:imageUrls}
     const config = { 
@@ -165,6 +166,8 @@ export const addRooms = (formdata , imageUrls) => async dispatch => {
             payload:res.data
         });
         dispatch(setAlert('Room added', 'green'));
+
+        history.push('/dashboard')
     } catch (err) {
         console.log(err.message);
         const errors = err.response.data.errors;
@@ -181,14 +184,15 @@ export const addRooms = (formdata , imageUrls) => async dispatch => {
 }
 
 //!Delete the room
-export const DeleteRoom = (roomId) =>async (dispatch) => {
+export const DeleteRoom = (roomId, history) =>async (dispatch) => {
     try {
         const res = await axios.delete(`http://localhost:5000/api/profile/rooms/${roomId}`);
         dispatch({
             type:DELETE_ROOM,
             payload:res.data
         });
-        dispatch(setAlert('Room removed', 'green'))
+        dispatch(setAlert('Room removed', 'green'));
+        history.push('/dashboard');
     } catch (err) {
         console.log(err.message)
         dispatch(setAlert('Room not removed', 'red'))
@@ -214,4 +218,92 @@ export const roomsImages = (urls, roomId) =>async (dispatch) =>{
             type:PROFILE_ERROR
         })
     }
+}
+
+//!Add food for restuarant
+export const addFoods = (formData , urls) => async dispatch => {
+    const obj ={
+        ...formData,
+        foodImages: urls
+    };
+
+    console.log(obj);
+    try {
+        const res = await axios.put('http://localhost:5000/api/profile/restuarant', obj );
+        dispatch({
+            type:GET_PROFILE,
+            payload:res.data
+        })
+
+        dispatch(setAlert("Food added for restuarant", "green"))
+    } catch (err) {
+        console.log(err.message);
+        const errors = err.response.data.errors;
+        console.log(errors);
+        if(errors){
+            errors.map(error => dispatch(setAlert(error.msg , 'red')))
+        }
+        dispatch({
+            type : PROFILE_ERROR
+        })
+    }
+}
+
+//!Delete food from restuarant
+export const DeleteRestuarant = (id, history) => async dispatch => {
+    try {
+        const res = await axios.delete(`http://localhost:5000/api/profile/restuarant/${id}`);
+        dispatch({
+            type:GET_PROFILE,
+            payload:res.data
+        })
+        dispatch(setAlert('Food removed', 'green'))
+        history.push('/dashboard')
+    } catch (err) {
+        console.log(err.message);
+        dispatch(setAlert('Room not removed', 'red'))
+    }
+}
+
+//!Add more images for resturant
+export const addFoodImages = (urls, foodId) =>async (dispatch) => {
+    try {
+        const res = await axios.put(`http://localhost:5000/api/profile/foods/${foodId}`, urls);
+        
+    } catch (err) {
+        console.log(err.message);
+        dispatch({
+            type:PROFILE_ERROR
+        })
+    }
+} 
+
+//!Add wedding hall to profile
+export const addHalls = (formData, urls) =>async (dispatch) => {
+
+    const config = {
+        headers:{
+            "Content-type":"application/json"
+        }
+    }
+    
+    const obj = {
+        ...formData,
+        hallimages:urls
+    }
+
+    try {
+        const res = await axios.put('http://localhost:5000/api/profile/weddinghalls', obj ,config);
+
+        dispatch({
+            type:GET_PROFILE,
+            payload:res.data
+        })
+    } catch (err) {
+        console.log(err.message);
+        dispatch({
+            type:PROFILE_ERROR
+        })
+    }
+    
 }

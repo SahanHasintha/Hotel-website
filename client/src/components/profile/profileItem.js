@@ -22,7 +22,7 @@ const ProfileItem = ({profile, key}) => {
                             </h4>
                         </div>
                     </div>
-                    <div className="right floated content" style={{color:"grey",marginRight:"20px", marginTop:"60px"}}>
+                    <div className="right floated content" style={{color:"grey", cursor:'pointer'  ,marginRight:"20px", marginTop:"60px"}}>
                         <Link to={`hotel-page/${profile._id}`} className="ui button">
                             Show More...
                         </Link>
