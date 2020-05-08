@@ -95,6 +95,14 @@ const HotelProfileSchema = mongoose.Schema({
             included:[],
             hallimages:[]
         }
+    ],
+    comments:[
+        {
+            text:
+            {
+                type:String
+            }
+    }
     ]
 
 })

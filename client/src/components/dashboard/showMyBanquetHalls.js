@@ -1,7 +1,7 @@
 import React,{useEffect} from 'react';
 import {connect} from 'react-redux';
 import Spinner from '../layouts/loadingGif';
-import MyRestuarantItem from './myProperties/myRestuarantItem';
+import MyBanquetItem from './myProperties/myBanquetItem';
 import {getMyProfile} from '../../actions/profile';
 
 export const ShowMyRestuarant = ({profile:{profile, loading}, getMyProfile}) => {
@@ -10,7 +10,7 @@ export const ShowMyRestuarant = ({profile:{profile, loading}, getMyProfile}) => 
     },[])
     return (
         <div>
-            {profile === null ? <Spinner/> :<MyRestuarantItem restuarant={profile.restuarant}/>}
+            {profile === null ? <Spinner/> :<MyBanquetItem halls={profile.weddinghall}/>}
             
         </div>
     )

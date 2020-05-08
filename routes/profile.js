@@ -6,7 +6,9 @@ const Profile = require('../models/HotelProfile');
 const User = require('../models/User');
 
 
-
+router.get('/xxx',(req,res)=> {
+    console.log('xxx');
+})
 
 //!Create profile for hotel
 router.post('/',[auth, [
@@ -87,6 +89,21 @@ router.put('/edit-profile',[auth, [
     }
 });
 
+//!Change the profile picture
+router.put('/profilepicture' , auth ,async (req,res)=>{
+    const {profilePictureUrl} = req.body;
+    try {
+        const profile = await Profile.findOne({user:req.data.user.id});
+        profile.profilepicture = profilePictureUrl;
+
+        await profile.save();
+        res.json(profile);
+    } catch (err) {
+        console.log(err.message);
+        res.json('server error');
+    }
+})
+
 //!Delete the hotel profile
 router.delete('/', auth ,async (req,res)=>{
     try {
@@ -111,6 +128,31 @@ router.get('/',async (req,res)=>{
     }
 })
 
+
+//!Get profile by id
+router.get('/hotel/:id',async (req,res)=>{
+    try {
+        const profile = await Profile.findById(req.params.id);
+        res.json(profile);
+    } catch (err) {
+        console.log(err.message);
+        res.json('Server error');
+    }
+})
+
+
+//!Get profile
+router.get('/myProfile', auth, async (req,res)=>{
+    try {
+        const profile = await Profile.findOne({user:req.data.user.id}).populate('user', ['name']);
+        res.json(profile);
+    } catch (err) {
+        console.log(err.message);
+        res.json('Server error')
+    }
+})
+
+
 //!Add rooms
 router.put('/rooms',[auth, [
     check('price', 'price is required').not().isEmpty(),
@@ -134,44 +176,6 @@ router.put('/rooms',[auth, [
     } catch (err) {
         console.log(err.message);
         res.json('Server error');
-    }
-})
-
-//!Change the profile picture
-router.put('/profilepicture' , auth ,async (req,res)=>{
-    const {profilePictureUrl} = req.body;
-    try {
-        const profile = await Profile.findOne({user:req.data.user.id});
-        profile.profilepicture = profilePictureUrl;
-
-        await profile.save();
-        res.json(profile);
-    } catch (err) {
-        console.log(err.message);
-        res.json('server error');
-    }
-})
-
-
-//!Get profile by id
-router.get('/hotel/:id',async (req,res)=>{
-    try {
-        const profile = await Profile.findById(req.params.id);
-        res.json(profile);
-    } catch (err) {
-        console.log(err.message);
-        res.json('Server error');
-    }
-})
-
-//!Get profile
-router.get('/myProfile', auth, async (req,res)=>{
-    try {
-        const profile = await Profile.findOne({user:req.data.user.id}).populate('user', ['name']);
-        res.json(profile);
-    } catch (err) {
-        console.log(err.message);
-        res.json('Server error')
     }
 })
 
@@ -202,6 +206,35 @@ router.put('/rooms/:id', auth , async (req,res)=>{
         
     } catch (err) {
         console.log(err.message)
+        res.json('Server error');
+    }
+})
+
+//!Remove the room in rooms
+router.delete('/rooms/:roomId',auth , async (req,res)=>{
+    try {
+        const profile = await Profile.findOne({user:req.data.user.id});
+        const removeIndex = profile.rooms.map(room => room.id).indexOf(req.params.roomId);
+
+        profile.rooms.splice(removeIndex, 1);
+
+        await profile.save();
+
+        res.json(profile);
+
+    } catch (err) {
+        console.log(err,message);
+        res.json('server error');
+    }
+})
+
+//!Get my rooms by token
+router.get('/rooms/my-rooms', auth , async (req, res)=>{
+    try {
+        const rooms = await Profile.findOne({user:req.data.user.id}).select("rooms")
+        return res.json(rooms);
+    } catch (err) {
+        console.log(err.message);
         res.json('Server error');
     }
 })
@@ -266,23 +299,7 @@ router.put('/foods/:id', auth ,async (req,res)=> {
 })
 
 
-//!Remove the room in rooms
-router.delete('/rooms/:roomId',auth , async (req,res)=>{
-    try {
-        const profile = await Profile.findOne({user:req.data.user.id});
-        const removeIndex = profile.rooms.map(room => room.id).indexOf(req.params.roomId);
 
-        profile.rooms.splice(removeIndex, 1);
-
-        await profile.save();
-
-        res.json(profile);
-
-    } catch (err) {
-        console.log(err,message);
-        res.json('server error');
-    }
-})
 
 //!Add wedding halls
 router.put('/weddinghalls', [auth, [
@@ -305,7 +322,6 @@ router.put('/weddinghalls', [auth, [
 
         if(included !== null){
             arrayOfIncluded =  included.split('.');
-            console.log(arrayOfIncluded);
         }
         const obj = {
             price,
@@ -316,7 +332,6 @@ router.put('/weddinghalls', [auth, [
             included:[...arrayOfIncluded]
         }
     try {
-        console.log(obj)
             const profile = await Profile.findOne({user:req.data.user.id})
 
             profile.weddinghall.unshift(obj);
@@ -326,6 +341,46 @@ router.put('/weddinghalls', [auth, [
             res.json(profile);
 
 
+    } catch (err) {
+        console.log(err.message);
+        res.json('Server error');
+    }
+})
+
+//!Remove wedding hall 
+router.delete('/weddinghalls/:hallid', auth ,async (req, res)=> {
+    try {
+        const profile = await Profile.findOne({user: req.data.user.id});
+        const index = profile.weddinghall.map(hall => hall.id).indexOf(req.params.hallid);
+        profile.weddinghall.splice(index,1);
+        await profile.save();
+        return res.json(profile)
+    } catch (err) {
+        console.log(err.message);
+        res.json('Server error');
+    }
+})
+
+//!Add comment
+router.put('/comment/:id',async (req,res)=>{
+    try {
+        const profile = await Profile.findById(req.params.id);
+        profile.comments.unshift(req.body);
+        await profile.save();
+        res.json(profile);
+    } catch (err) {
+        console.log(err.message);
+        res.json('Server error');
+    }
+})
+
+router.delete('/comment/remove/:id', auth , async (req, res) => {
+    try {
+        const profile = await Profile.findOne({user: req.data.user.id});
+        const index = profile.comments.map(comment => comment.id).indexOf(req.params.id);
+        profile.splice(index, 1);
+        await profile.save();
+        res.json(profile);
     } catch (err) {
         console.log(err.message);
         res.json('Server error');

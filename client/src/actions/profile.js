@@ -1,6 +1,14 @@
 
 import axios from 'axios';
-import {ALL_PROFILES, GET_PROFILEBYID, PROPIC_UPLOADED, GET_PROFILE, PROFILE_ERROR, DELETE_ROOM} from './types';
+import {
+    ALL_PROFILES, 
+    GET_PROFILEBYID, 
+    PROPIC_UPLOADED, 
+    GET_PROFILE, 
+    PROFILE_ERROR, 
+    DELETE_ROOM,
+    GET_ROOMS
+} from './types';
 import {setAlert} from './alert';
 
 //! Get All profiles
@@ -220,6 +228,22 @@ export const roomsImages = (urls, roomId) =>async (dispatch) =>{
     }
 }
 
+//!Get the room by token
+export const getMyRooms = () =>async dispatch => {
+    try {
+        const res = await axios.get('http://localhost:5000/api/profile/rooms/my-rooms');
+        dispatch({
+            type:GET_ROOMS,
+            payload:res.data
+        })
+    } catch (err) {
+        console.log(err.message);
+        dispatch({
+            type:PROFILE_ERROR
+        })
+    }
+}
+
 //!Add food for restuarant
 export const addFoods = (formData , urls) => async dispatch => {
     const obj ={
@@ -306,4 +330,58 @@ export const addHalls = (formData, urls) =>async (dispatch) => {
         })
     }
     
+}
+
+//!Delete the wedding hall
+export const removeBanquetHall = (hallId)=> async dispatch => {
+    try {
+        const res = await axios.delete(`http://localhost:5000/api/profile/weddinghalls/${hallId}`)
+        dispatch({
+            type:GET_PROFILE,
+            payload:res.data
+        })        
+    } catch (err) {
+        dispatch({
+            type:PROFILE_ERROR
+        })
+    }
+}
+
+
+//!Add comment
+export const AddComment = (comment, id) => async dispatch => {
+    const config ={
+        headers:{
+            "Content-type":"application/json"
+        }
+    }
+    const obj = {
+        text:comment
+    }
+    try {
+        const res = await axios.put(`http://localhost:5000/api/profile/comment/${id}`, obj, config)
+        console.log(res.data);
+    } catch (err) {
+        console.log(err.message);
+        dispatch({
+            type:PROFILE_ERROR
+        })
+    }
+}
+
+//!Remove comment
+export const removeComment = (id) => async dispatch => {
+    try {
+        const res = await axios.delete(`http://localhost:5000/api/profile/comment/remove/${id}`)
+        dispatch({
+            type:GET_PROFILE,
+            payload:res.data
+        })
+        
+    } catch (err) {
+        console.log(err.message);
+        dispatch({
+            type:PROFILE_ERROR
+        })
+    }
 }

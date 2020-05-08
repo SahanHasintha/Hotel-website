@@ -26,19 +26,20 @@ router.post('/', [
     const errors = validationResult(req);
 
     if(!errors.isEmpty()){
-        res.status(400).json({errors:errors.array()});
+       return res.status(400).json({errors:errors.array()});
     }
     const {email, password} = req.body;
-
     try {
         const user = await User.findOne({email})
         if(!user){
-            res.status(400).json({errors:[{msg:'Invalid credentials'}]});
+            console.log('yyy')
+            return res.status(400).json({errors:[{msg:'Invalid credentials'}]});
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
         if(!isMatch){
-            res.status(400).json({errors:[{msg:'Invalid credentials'}]});
+            console.log(password)
+            return res.status(400).json({errors:[{msg:'Invalid credentials'}]});
         }
 
         
@@ -54,7 +55,7 @@ router.post('/', [
             {expiresIn:3600},
             (error, token)=>{
                 if(error) throw error;
-                res.json({token})
+                return res.json({token})
             }
         )
     } catch (err) {

@@ -73,8 +73,8 @@ const Dashboard = ({profilePictureUpload, getMyProfile , profile:{profile , load
                 <Link to="/update-restuarant" className="ui toggle button" style={{width:'49%', marginBottom:10}}>Add new Food for restuarant</Link>
                 <Link to="/my-restuarant" className="ui toggle button" style={{width:'49%', marginBottom:10}}>Show my restuarant</Link>
                 <Link to="/update-banquethall" className="ui toggle button" style={{width:'49%', marginBottom:10}}>Add new BanquetHall</Link>
-                <Link to="/update-banquethall" className="ui toggle button" style={{width:'49%', marginBottom:10}}>Show my BanquetHall</Link>
-                
+                <Link to="/my-halls" className="ui toggle button" style={{width:'49%', marginBottom:10}}>Show my BanquetHall</Link>
+                <Link to="/comments" className="ui toggle button" style={{width:'49%', marginBottom:10}}>Show All comments</Link>
             </div>
         </div>
         </div>

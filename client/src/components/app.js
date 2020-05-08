@@ -26,6 +26,8 @@ import MyRooms from './dashboard/showMyRooms';
 import MyRestuarant from './dashboard/showMyRestuarant';
 import Halls from './hotelpages/banquetHall';
 import ShowOneRoom from './hotelpages/showOneRoom';
+import MyHalls from './dashboard/showMyBanquetHalls';
+import Comments from './dashboard/showAllComments';
 
 
 if(localStorage.token){
@@ -58,7 +60,8 @@ const App = () => {
                                         <PrivateRoute path="/my-rooms" exact component={MyRooms}/>
                                         <Route path="/:profileId/rooms/:roomId" component={ShowOneRoom}/>
                                         <PrivateRoute path="/my-restuarant" component={MyRestuarant}/>
-                                        
+                                        <PrivateRoute path="/my-halls" component={MyHalls}/>
+                                        <PrivateRoute path="/comments" component={Comments}/>
                                     </div>
                                     <PrivateRoute path="/dashboard" component={Dashboard}/>
                                     

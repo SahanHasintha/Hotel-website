@@ -1,4 +1,12 @@
-import {ALL_PROFILES,GET_PROFILEBYID, PROPIC_UPLOADED, GET_PROFILE, PROFILE_ERROR,DELETE_ROOM} from '../actions/types';
+import {
+    ALL_PROFILES,
+    GET_PROFILEBYID, 
+    PROPIC_UPLOADED, 
+    GET_PROFILE, 
+    PROFILE_ERROR,
+    DELETE_ROOM,
+    GET_ROOMS
+} from '../actions/types';
 
 const initialState = {
     profiles:[],
@@ -10,6 +18,9 @@ const initialState = {
 export default (state=initialState, action) => {
     const {type, payload} = action;
     switch(type){
+        case GET_ROOMS:
+            state.profile.rooms = payload.rooms;
+            return state;
         case ALL_PROFILES:
             return {
                 ...state,

@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {getProfileById} from '../../actions/profile';
 import LoadingGif from '../layouts/loadingGif';
+import CommentBox from './CommentBox';
 
 const HotelPage = ({getProfileById , match , profile:{profile, loading}}) => {
 
@@ -29,9 +30,11 @@ const HotelPage = ({getProfileById , match , profile:{profile, loading}}) => {
                         <i className="phone icon" style={{fontSize:25}}/>
                         <h4> Contact us :  {profile.phonenumber}</h4>
                     </div>
+                    
                     <div className="ui raised segment" style={{margin:20,backgroundColor:'#B0AFAF'}}>
                         <ul>{profile.description.map(desc => <li style={{marginBottom:15}}><h5>{desc}</h5></li>)}</ul>
                     </div>
+                    <CommentBox id ={profile._id}/>
                     <h1>See more about us... press the buttons</h1>
                 </div>
             </div>

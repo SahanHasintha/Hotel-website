@@ -13,13 +13,12 @@ router.post('/',[
     check('email','email is required').isEmail(),
     check('password','Please enter the password at least 6 characters').isLength({min:6})
 ],async (req,res)=> {
-
     const errors = validationResult(req);
     if(!errors.isEmpty()){
         console.log(errors);
-        res.status(400).json({errors:errors.array()});
+        return res.status(400).json({errors:errors.array()});
     }
-
+    console.log(req.body);
     const {name, email, password} = req.body
         const newObj = {
             name,
@@ -30,7 +29,7 @@ router.post('/',[
     try {
         let user =await  User.findOne({email});
         if(user){
-            res.status(400).json({msg:'user already exists'});
+            return res.status(400).json({msg:'user already exists'});
         }
         user = new User(newObj);
         const salt = await bcrypt.genSalt(10);
@@ -50,7 +49,7 @@ router.post('/',[
         {expiresIn:3600},
         (error, token)=>{
             if(error) throw error;
-            res.json({token})
+            return res.json({token})
         }
     )
 
